@@ -11,7 +11,7 @@ class DataFrame(val columns: List<Column<*>>) {
   class Column<T>(
     val name: String,
     val type: DataType,
-    val values: List<T>
+    val values: List<T?>
   )
 
   companion object{
@@ -22,12 +22,27 @@ class DataFrame(val columns: List<Column<*>>) {
         val name = rows.first()[i]
         val values = rows.drop(1).map { row -> row[i] }
         when {
-          values.all { it.toDoubleOrNull() != null } -> Column(name, DataType.DOUBLE, values.map { it.toDouble() })
-          values.all { it.toBooleanStrictOrNull() != null } -> Column(name, DataType.BOOLEAN, values.map { it.toBooleanStrict() })
+          values.all { it.toDoubleOrNull() != null || it.isEmpty() } -> Column(name, DataType.DOUBLE, values.map { it.toDoubleOrNull() })
+          values.all { it.toBooleanStrictOrNull() != null || it.isEmpty() } -> Column(name, DataType.BOOLEAN, values.map { it.toBooleanStrictOrNull() })
           else -> Column(name, DataType.STRING, values)
         }
       }
       return DataFrame(columns)
     }
+  }
+
+  fun dropNA(columnNames: List<String>): DataFrame {
+    val columnsToExamine = columns.filter{it.name in columnNames}
+    val rowsToDrop = mutableSetOf<Int>()
+    columnsToExamine.forEach { column ->
+      column.values.forEachIndexed { index, value ->
+        if (value == null) {
+          rowsToDrop.add(index)
+        }
+      }
+    }
+    return DataFrame(columns.map { column ->
+      Column(column.name, column.type, column.values.filterIndexed { index, _ -> index !in rowsToDrop })
+    })
   }
 }

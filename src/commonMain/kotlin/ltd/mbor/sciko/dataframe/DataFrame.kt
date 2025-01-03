@@ -2,7 +2,7 @@ package ltd.mbor.sciko.dataframe
 
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 
-class DataFrame(val columns: List<Column<*>>) {
+class DataFrame(val columns: List<Column<*>>, val rowCount: Int = columns.first().values.size) {
   enum class DataType {
     DOUBLE,
     STRING,

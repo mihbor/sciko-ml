@@ -45,4 +45,24 @@ class DataFrame(val columns: List<Column<*>>, val rowCount: Int = columns.first(
       Column(column.name, column.type, column.values.filterIndexed { index, _ -> index !in rowsToDrop })
     })
   }
+
+  fun dropColumnsByName(columnNames: Collection<String>): DataFrame {
+    return DataFrame(columns.filter { it.name !in columnNames })
+  }
+
+  fun dropColumnsByIndex(columnIndices: Collection<Int>): DataFrame {
+    return DataFrame(columns.filterIndexed { index, _ -> index !in columnIndices })
+  }
+
+  fun columnIndicesOfTypes(vararg types: DataType): List<Int> {
+    return columns.mapIndexedNotNull { index, column ->
+      if (column.type in types) index else null
+    }
+  }
+
+  fun columnIndicesNotOfTypes(vararg types: DataType): List<Int> {
+    return columns.mapIndexedNotNull { index, column ->
+      if (column.type !in types) index else null
+    }
+  }
 }

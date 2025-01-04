@@ -50,7 +50,7 @@ class DataFrame(val columns: List<Column<*>>, val rowCount: Int = columns.first(
     })
   }
 
-  fun dropColumnsByName(columnNames: Collection<String>): DataFrame {
+  fun dropColumnsByName(vararg columnNames: String): DataFrame {
     return DataFrame(columns.filter { it.name !in columnNames })
   }
 

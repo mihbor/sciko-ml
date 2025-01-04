@@ -1,4 +1,4 @@
-package ltd.mbor.sciko.dataframe
+package ltd.mbor.sciko.ml.dataframe
 
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 
@@ -11,7 +11,7 @@ class DataFrame(val columns: List<Column<*>>, val rowCount: Int = columns.first(
   class Column<T>(
     val name: String,
     val type: DataType,
-    val values: List<T?>
+    val values: List<T>
   )
 
   companion object{
@@ -29,6 +29,10 @@ class DataFrame(val columns: List<Column<*>>, val rowCount: Int = columns.first(
       }
       return DataFrame(columns)
     }
+  }
+
+  operator fun get(columnName: String): Column<*>? {
+    return columns.singleOrNull { it.name == columnName }
   }
 
   fun dropNA(columnNames: List<String>): DataFrame {

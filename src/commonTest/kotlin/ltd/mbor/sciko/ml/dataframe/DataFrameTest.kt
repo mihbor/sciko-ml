@@ -1,4 +1,4 @@
-package ltd.mbor.sciko.dataframe
+package ltd.mbor.sciko.ml.dataframe
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

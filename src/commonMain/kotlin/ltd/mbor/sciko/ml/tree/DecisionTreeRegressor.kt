@@ -144,10 +144,3 @@ class DecisionTreeRegressor {
 private fun <T> MultiArray<T, D2>.toD1List(): List<MultiArray<T, D1>> {
   return (0..<shape[0]).map { get(it) }
 }
-
-private data class Quad<A, B, C, D>(
-  val first: A,
-  val second: B,
-  val third: C,
-  val fourth: D
-)

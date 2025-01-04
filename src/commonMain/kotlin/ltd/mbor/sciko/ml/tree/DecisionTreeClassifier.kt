@@ -8,6 +8,7 @@ import org.jetbrains.kotlinx.multik.ndarray.data.D2
 import org.jetbrains.kotlinx.multik.ndarray.data.MultiArray
 import org.jetbrains.kotlinx.multik.ndarray.data.get
 import org.jetbrains.kotlinx.multik.ndarray.operations.toList
+import kotlin.math.pow
 
 class DecisionTreeClassifier {
 
@@ -18,9 +19,9 @@ class DecisionTreeClassifier {
     return this
   }
 
-  fun fit(X: DataFrame, y: DataFrame.Column<Int>): DecisionTreeClassifier {
+  fun fit(X: DataFrame, y: DataFrame.Column<Double>): DecisionTreeClassifier {
     val XArray = mk.ndarray(X.columns.map { (it as DataFrame.Column<Double>).values }).transpose()
-    val yArray = mk.ndarray(y.values)
+    val yArray = mk.ndarray(y.values.map { it.toInt() })
     return fit(XArray, yArray)
   }
 
@@ -143,10 +144,3 @@ class DecisionTreeClassifier {
 private fun <T> MultiArray<T, D2>.toD1List(): List<MultiArray<T, D1>> {
   return (0..<shape[0]).map { get(it) }
 }
-
-private data class Quad<A, B, C, D>(
-  val first: A,
-  val second: B,
-  val third: C,
-  val fourth: D
-)

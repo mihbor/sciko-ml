@@ -23,9 +23,9 @@ class DecisionTreeClassifierTest {
 
     val model = DecisionTreeClassifier().fit(X, y)
 
-    assertEquals(0, model.predict(X[0]), 1e-6)
-    assertEquals(1, model.predict(X[1]), 1e-6)
-    assertEquals(0, model.predict(X[2]), 1e-6)
+    assertEquals(0, model.predict(X[0]))
+    assertEquals(1, model.predict(X[1]))
+    assertEquals(0, model.predict(X[2]))
   }
 
   @Test
@@ -39,13 +39,13 @@ class DecisionTreeClassifierTest {
 
     val dataFrame = DataFrame.readCsv(csvData)
     val X = dataFrame.dropColumnsByName("c")
-    val y = dataFrame["c"] as DataFrame.Column<Int>
+    val y = dataFrame["c"] as DataFrame.Column<Double>
 
     val model = DecisionTreeClassifier().fit(X, y)
 
-    assertEquals(0, model.predict(X[0] as List<Double>), 1e-6)
-    assertEquals(1, model.predict(X[1] as List<Double>), 1e-6)
-    assertEquals(0, model.predict(X[2] as List<Double>), 1e-6)
+    assertEquals(0, model.predict(X[0] as List<Double>))
+    assertEquals(1, model.predict(X[1] as List<Double>))
+    assertEquals(0, model.predict(X[2] as List<Double>))
   }
 
   @Test
@@ -62,7 +62,7 @@ class DecisionTreeClassifierTest {
     val model = DecisionTreeClassifier().fit(X, y)
     val predictions = model.predict(X)
 
-    assertEquals(y, predictions, 1e-6)
+    assertEquals(y, predictions)
   }
 
   @Test
@@ -76,11 +76,11 @@ class DecisionTreeClassifierTest {
 
     val dataFrame = DataFrame.readCsv(csvData)
     val X = dataFrame.dropColumnsByName("c")
-    val y = dataFrame["c"] as DataFrame.Column<Int>
+    val y = dataFrame["c"] as DataFrame.Column<Double>
 
     val model = DecisionTreeClassifier().fit(X, y)
     val predictions = model.predict(X)
 
-    assertEquals(y.values, predictions.toList(), 1e-6)
+    assertEquals(y.values.map { it.toInt() }, predictions.toList())
   }
 }

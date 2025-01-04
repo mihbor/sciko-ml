@@ -8,10 +8,10 @@ class DataFrameTest {
   @Test
   fun testReadCsv() {
     val csvData = """
-            name,age,active
-            John,30,true
-            Jane,25,false
-        """.trimIndent()
+      name,age,active
+      John,30,true
+      Jane,25,false
+      """.trimIndent()
 
     val dataFrame = DataFrame.readCsv(csvData)
 
@@ -36,10 +36,10 @@ class DataFrameTest {
   @Test
   fun testDropNA() {
     val csvData = """
-        name,age,active
-        John,30,true
-        Jane,,false
-        """.trimIndent()
+      name,age,active
+      John,30,true
+      Jane,,false
+      """.trimIndent()
 
     val dataFrame = DataFrame.readCsv(csvData)
     val cleanedDataFrame = dataFrame.dropNA(listOf("age"))

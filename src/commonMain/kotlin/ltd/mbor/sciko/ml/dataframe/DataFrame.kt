@@ -35,6 +35,10 @@ class DataFrame(val columns: List<Column<*>>, val rowCount: Int = columns.first(
     return columns.singleOrNull { it.name == columnName }
   }
 
+  operator fun get(index: Int): List<Any?> {
+    return columns.map { it.values[index] }
+  }
+
   fun dropNA(columnNames: List<String>): DataFrame {
     val columnsToExamine = columns.filter{it.name in columnNames}
     val rowsToDrop = mutableSetOf<Int>()

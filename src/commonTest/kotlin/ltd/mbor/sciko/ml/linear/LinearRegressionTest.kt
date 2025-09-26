@@ -2,12 +2,16 @@ package ltd.mbor.sciko.ml.linear
 
 import ltd.mbor.sciko.ml.assertEquals
 import ltd.mbor.sciko.ml.dataframe.DataFrame
+import ltd.mbor.sciko.ml.metrics.r2Score
+import ltd.mbor.sciko.ml.trainTestSplit
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.ndarray.data.get
 import org.jetbrains.kotlinx.multik.ndarray.operations.toList
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class LinearRegressionTest {
 
@@ -92,5 +96,19 @@ class LinearRegressionTest {
     val prediction = model.predict(X[1])
 
     assertEquals(y[1], prediction, 1e-6)
+  }
+
+  @Test
+  fun testMtCars() {
+    val dataFrame = DataFrame.readCsv(this::class.java.getResource("/mtcars.csv").readText())
+    val (train, test) = dataFrame.trainTestSplit(0.18, Random(14))
+    val X = train.keepColumnsByName("hp", "wt")
+    val y = train.get("mpg") as DataFrame.Column<Double>
+    val model = LinearRegression().fit(X, y)
+    val pred = model.predict(test.keepColumnsByName("hp", "wt"))
+    val r2 = r2Score(test.get("mpg") as DataFrame.Column<Double>, pred)
+    println("R2: $r2")
+    assertTrue(r2 > 0.72, "Fit should have an R2 score of just over 0.72")
+    assertTrue(r2 < 0.720015, "Fit should have an R2 score of just over 0.72")
   }
 }

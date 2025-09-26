@@ -7,10 +7,11 @@ import org.jetbrains.kotlinx.multik.ndarray.data.D2
 import org.jetbrains.kotlinx.multik.ndarray.data.MultiArray
 import org.jetbrains.kotlinx.multik.ndarray.data.get
 import org.jetbrains.kotlinx.multik.ndarray.operations.toList
+import kotlin.random.Random
 
-fun DataFrame.trainTestSplit(testSize: Double): Pair<DataFrame, DataFrame> {
+fun DataFrame.trainTestSplit(testSize: Double, random: Random = Random): Pair<DataFrame, DataFrame> {
   val testSizeInt = (testSize * rowCount).toInt()
-  val shuffledIndices = (0 until rowCount).shuffled()
+  val shuffledIndices = (0 until rowCount).shuffled(random)
   val testIndices = shuffledIndices.take(testSizeInt)
   val trainIndices = shuffledIndices.drop(testSizeInt)
   return Pair(
@@ -23,9 +24,9 @@ fun DataFrame.trainTestSplit(testSize: Double): Pair<DataFrame, DataFrame> {
   )
 }
 
-fun MultiArray<Double, D2>.trainTestSplit(testSize: Double): Pair<MultiArray<Double, D2>, MultiArray<Double, D2>> {
+fun MultiArray<Double, D2>.trainTestSplit(testSize: Double, random: Random = Random): Pair<MultiArray<Double, D2>, MultiArray<Double, D2>> {
   val testSizeInt = (testSize * shape[0]).toInt()
-  val shuffledIndices = (0 until shape[0]).shuffled()
+  val shuffledIndices = (0 until shape[0]).shuffled(random)
   val testIndices = shuffledIndices.take(testSizeInt)
   val trainIndices = shuffledIndices.drop(testSizeInt)
   return Pair(

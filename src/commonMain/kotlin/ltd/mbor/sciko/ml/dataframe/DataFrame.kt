@@ -58,8 +58,16 @@ class DataFrame(val columns: List<Column<*>>, val rowCount: Int = columns.first(
     return DataFrame(columns.filter { it.name !in columnNames })
   }
 
+  fun keepColumnsByName(vararg columnNames: String): DataFrame {
+    return DataFrame(columns.filter { it.name in columnNames })
+  }
+
   fun dropColumnsByIndex(columnIndices: Collection<Int>): DataFrame {
     return DataFrame(columns.filterIndexed { index, _ -> index !in columnIndices })
+  }
+
+  fun keepColumnsByIndex(columnIndices: Collection<Int>): DataFrame {
+    return DataFrame(columns.filterIndexed { index, _ -> index in columnIndices })
   }
 
   fun columnIndicesOfTypes(vararg types: DataType): List<Int> {

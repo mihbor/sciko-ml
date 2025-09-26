@@ -1,6 +1,9 @@
 package ltd.mbor.sciko.ml.metrics
 
+import ltd.mbor.sciko.ml.dataframe.DataFrame
 import org.jetbrains.kotlinx.multik.api.linalg.dot
+import org.jetbrains.kotlinx.multik.api.mk
+import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.ndarray.data.D1
 import org.jetbrains.kotlinx.multik.ndarray.data.MultiArray
 import org.jetbrains.kotlinx.multik.ndarray.operations.map
@@ -23,4 +26,8 @@ fun r2Score(yTrue: MultiArray<Double, D1>, yPred: MultiArray<Double, D1>): Doubl
   val ssTot = (yTrue - yTrueMean) dot (yTrue - yTrueMean)
   val ssRes = (yTrue - yPred) dot (yTrue - yPred)
   return 1 - ssRes / ssTot
+}
+
+fun r2Score(yTrue: DataFrame.Column<Double>, yPred: MultiArray<Double, D1>): Double {
+  return r2Score(mk.ndarray(yTrue.values), yPred)
 }
